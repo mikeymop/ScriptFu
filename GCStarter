@@ -1,0 +1,28 @@
+@ECHO OFF
+rem This checks taskmgr for an instance of the program, and returns 0 if it is found
+
+tasklist /FI "IMAGENAME eq [Program].exe" 2>NUL | find /I /N "[Program].exe">NUL
+IF "%ERRORLEVEL%"=="0" (
+	echo Program is running
+	SET isrun=1
+	
+	rem [Program]Start not found
+	ECHO 
+	ECHO "Error: Updater did not start, is [Program] already running?"
+	TIMEOUT /t 2
+	ECHO ""
+	ECHO "Force Starting [Program]"
+	
+	CALL START /D "C:\Program Files (x86)\[folder]\[folder2]" [Program]xe
+	ECHO "[Program] Started"
+	)
+IF "%ERRORLEVEL%" NEQ "0" (
+	echo [Program] is not started
+	
+	ECHO 
+	echo "Checking for Updates"
+	TIMEOUT /t 2
+	ECHO "Starting [Program]"
+	ECHO 
+	CALL START /WAIT /D "C:\Program Files (x86)\[folder]\[folder2]" [Program]Start.exe
+)
